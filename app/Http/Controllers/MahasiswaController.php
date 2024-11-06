@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\Models\Mahasiswa;
 
 class MahasiswaController extends Controller
 {
@@ -12,7 +13,7 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        $data['mahasiswa'] = \App\Models\Mahasiswa::all();
+        $data['mahasiswa'] = Mahasiswa::orderBy('created_at', 'asc')->paginate(2);
         $data['judul'] = 'Data Dokter';
         return view('mahasiswa_index', $data);
 
@@ -40,7 +41,7 @@ class MahasiswaController extends Controller
             'nomor_hp'=>'required',
         ]);
 
-        $mahasiswa = new \App\Models\Mahasiswa();
+        $mahasiswa = new Mahasiswa();
         $mahasiswa->nim = $request->nim;
         $mahasiswa->nama = $request->nama;
         $mahasiswa->email = $request->email;
@@ -58,6 +59,8 @@ class MahasiswaController extends Controller
     public function show(string $id)
     {
         //
+
+       
     }
 
     /**
@@ -65,7 +68,9 @@ class MahasiswaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data['mahasiswa'] = Mahasiswa::findOrFail($id);
+        $data['list_mahasiswa'] = ['IT', 'SI', 'SK'];
+        return view('mahasiswa_edit', $data);
     }
 
     /**
@@ -74,13 +79,34 @@ class MahasiswaController extends Controller
     public function update(Request $request, string $id)
     {
         //
+
+        $request->validate([
+            'nim'=>'required',
+            'nama'=>'required',
+            'email'=>'required',
+            'jurusan'=>'required',
+            'nomor_hp'=>'required',
+        ]);
+        
+        $mahasiswa = Mahasiswa::findOrFail($id);
+
+        $mahasiswa->nim = $request->nim;
+        $mahasiswa->nama = $request->nama;
+        $mahasiswa->email = $request->email;
+        $mahasiswa->jurusan = $request->jurusan;
+        $mahasiswa->nomor_hp = $request->nomor_hp;
+
+        $mahasiswa->save();
+        return redirect()->route('mahasiswa.index')->with('success', 'Data Berhasil diubah');
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        //
+    {        
+        $mahasiswa = Mahasiswa::findOrFail($id);
+        $mahasiswa->delete();
+        return redirect()->route('mahasiswa.index')->with('success', 'Data Berhasil dihapus');
     }
 }
