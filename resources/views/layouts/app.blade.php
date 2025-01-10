@@ -58,7 +58,19 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Link</a>
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="="">
+                                            Dropdown button
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item"
+                                                    href="{{ url('mahasiswa/laporan/print', []) }}">laporan</a>
+                                            </li>
+                                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        </ul>
+                                    </div>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link disabled" aria-disabled="true">Disabled</a>

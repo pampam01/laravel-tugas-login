@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use \App\Models\Mahasiswa;
 
@@ -109,4 +110,12 @@ class MahasiswaController extends Controller
         $mahasiswa->delete();
         return redirect()->route('mahasiswa.index')->with('success', 'Data Berhasil dihapus');
     }
+
+    public function print(){
+        $data['mahasiswa'] = Mahasiswa::all();
+        $data['judul'] = 'Data Mahasiswa';
+        return view('mahasiswa_print', $data);
+    }
+
+   
 }
